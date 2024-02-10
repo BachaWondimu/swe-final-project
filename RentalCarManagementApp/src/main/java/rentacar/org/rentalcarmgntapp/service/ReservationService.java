@@ -1,15 +1,15 @@
 package rentacar.org.rentalcarmgntapp.service;
 
-import rentacar.org.rentalcarmgntapp.domain.Reservation;
 import rentacar.org.rentalcarmgntapp.dto.request.ReservationRequestDto;
+import rentacar.org.rentalcarmgntapp.dto.response.ReservationResponseDto;
 
 import java.util.List;
 
 public interface ReservationService {
-    List<Reservation> getAllReservations();
-    Reservation getReservationById(Long id);
-    Reservation addReservation(ReservationRequestDto reservationRequestDto);
-    Reservation updateReservation(Long id, ReservationRequestDto updatedReservationRequestDto);
+    List<ReservationResponseDto> getAllReservations();
+    ReservationResponseDto getReservationById(Long id);
+    ReservationResponseDto addReservation(ReservationRequestDto reservationRequestDto);
+    ReservationResponseDto updateReservation(Long id, ReservationRequestDto updatedReservationRequestDto);
     void deleteReservation(Long id);
     void checkoutReservation(Long id);
 }

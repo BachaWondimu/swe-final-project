@@ -23,10 +23,10 @@ public class Reservation {
     private LocalDate endDate;
     private boolean isPickedUp;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
 //    @NotBlank
     private Customer customer;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
 //    @NotBlank
     private Vehicle vehicle;
 

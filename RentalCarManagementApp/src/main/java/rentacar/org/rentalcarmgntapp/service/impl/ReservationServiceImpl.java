@@ -7,6 +7,7 @@ import rentacar.org.rentalcarmgntapp.domain.Customer;
 import rentacar.org.rentalcarmgntapp.domain.Reservation;
 import rentacar.org.rentalcarmgntapp.domain.Vehicle;
 import rentacar.org.rentalcarmgntapp.dto.request.ReservationRequestDto;
+import rentacar.org.rentalcarmgntapp.dto.response.ReservationResponseDto;
 import rentacar.org.rentalcarmgntapp.repository.ReservationRepository;
 import rentacar.org.rentalcarmgntapp.service.CustomerService;
 import rentacar.org.rentalcarmgntapp.service.ReservationService;
@@ -24,28 +25,44 @@ public class ReservationServiceImpl implements ReservationService {
     private final ModelMapper modelMapper;
 
     @Override
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
+    public List<ReservationResponseDto> getAllReservations() {
+
+        return reservationRepository.findAll()
+                .stream()
+                .map(reservation -> modelMapper.map(reservation, ReservationResponseDto.class))
+                .toList();
     }
 
     @Override
-    public Reservation getReservationById(Long id) {
-        return reservationRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Reservation not found"));
+    public ReservationResponseDto getReservationById(Long id) {
+     var response = reservationRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Reservation not found"));
+     return modelMapper.map(response,ReservationResponseDto.class);
     }
 
 
     @Override
-    public Reservation addReservation(ReservationRequestDto reservationRequestDto) {
+    public ReservationResponseDto addReservation(ReservationRequestDto reservationRequestDto) {
         Customer customer = customerService.getCustomerById(reservationRequestDto.getCustomerId());
         Vehicle vehicle = vehicleService.getVehicleById(reservationRequestDto.getVehicleId());
         vehicle.setReserved(true);
-        Reservation reservation = new Reservation(null, reservationRequestDto.getPickupLocation(), reservationRequestDto.getDropOffLocation(), reservationRequestDto.getStartDate(), reservationRequestDto.getEndDate(), false, customer, vehicle);
+        Reservation reservation = new Reservation(
+                null,
+                reservationRequestDto.getPickupLocation(),
+                reservationRequestDto.getDropOffLocation(),
+                reservationRequestDto.getStartDate(),
+                reservationRequestDto.getEndDate(),
+                false,
+                customer,
+                vehicle
+        );
 
-        return reservationRepository.save(reservation);
+        return getReservationResponseDto(reservation);
+
     }
 
     @Override
-    public Reservation updateReservation(Long id, ReservationRequestDto updatedReservationRequestDto) {
+    public ReservationResponseDto updateReservation(Long id, ReservationRequestDto updatedReservationRequestDto) {
+
         Reservation existingReservation = reservationRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Reservation not found"));
 
         Customer customer = customerService.getCustomerById(updatedReservationRequestDto.getCustomerId());
@@ -57,7 +74,26 @@ public class ReservationServiceImpl implements ReservationService {
         existingReservation.setEndDate(updatedReservationRequestDto.getEndDate());
         existingReservation.setCustomer(customer);
         existingReservation.setVehicle(vehicle);
-        return reservationRepository.save(existingReservation);
+
+        return getReservationResponseDto(existingReservation);
+    }
+
+    private ReservationResponseDto getReservationResponseDto(Reservation existingReservation) {
+        Reservation response = reservationRepository.save(existingReservation);
+        return new ReservationResponseDto(
+                response.getPickupLocation(),
+                response.getDropOffLocation(),
+                response.getStartDate(),
+                response.getEndDate(),
+                response.isPickedUp(),
+                response.getCustomer().getCustomerNumber(),
+                response.getCustomer().getName(),
+                response.getCustomer().getEmail(),
+                response.getVehicle().getMake(),
+                response.getVehicle().getModel(),
+                response.getVehicle().getYear(),
+                response.getVehicle().getRegistrationNum()
+        );
     }
 
     @Override
