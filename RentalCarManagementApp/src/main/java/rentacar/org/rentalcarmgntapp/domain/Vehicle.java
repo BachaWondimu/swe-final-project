@@ -19,6 +19,7 @@ public class Vehicle {
     private String model;
     private int year;
     private String registrationNum;
+    private boolean isReserved;
 }
 
 

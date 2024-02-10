@@ -1,7 +1,6 @@
 package rentacar.org.rentalcarmgntapp.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,18 +17,17 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String reservationNumber;
     private String pickupLocation;
     private String dropOffLocation;
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean isPickedUp;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @NotBlank
+    @ManyToOne
+//    @NotBlank
     private Customer customer;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @NotBlank
+    @ManyToOne
+//    @NotBlank
     private Vehicle vehicle;
 
 }
