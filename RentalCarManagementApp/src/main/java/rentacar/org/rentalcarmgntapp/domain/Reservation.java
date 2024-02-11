@@ -21,6 +21,7 @@ public class Reservation {
     private String dropOffLocation;
     private LocalDate startDate;
     private LocalDate endDate;
+
     private boolean isPickedUp;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

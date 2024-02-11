@@ -28,13 +28,13 @@ public class VehicleController {
         Vehicle vehicle = vehicleService.getVehicleById(id);
         return ResponseEntity.ok(vehicle);
     }
-    @PostMapping("add")
+    @PostMapping("/add")
     public ResponseEntity<Vehicle> addVehicle(@RequestBody VehicleRequestDto vehicleRequestDto) {
         Vehicle savedVehicle = vehicleService.addVehicle(vehicleRequestDto);
         return new ResponseEntity<>(savedVehicle, HttpStatus.CREATED);
     }
 
-    @PutMapping("update")
+    @PutMapping("/update")
     public ResponseEntity<Vehicle> updateVehicle(@RequestBody Vehicle updatedVehicle) {
         Vehicle vehicle = vehicleService.updateVehicle(updatedVehicle);
         return ResponseEntity.ok(vehicle);
