@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rentacar.org.rentalcarmgntapp.domain.Customer;
 import rentacar.org.rentalcarmgntapp.dto.request.CustomerRequestDto;
+import rentacar.org.rentalcarmgntapp.dto.response.CustomerResponseDto;
 import rentacar.org.rentalcarmgntapp.service.CustomerService;
 
 import java.util.List;
@@ -16,8 +17,8 @@ import java.util.List;
 public class CustomerController {
     private final CustomerService customerService;
     @GetMapping
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        List<Customer> customers = customerService.getAllCustomers();
+    public ResponseEntity<List<CustomerResponseDto>> getAllCustomers() {
+        List<CustomerResponseDto> customers = customerService.getAllCustomers();
         return ResponseEntity.ok(customers);
     }
 
